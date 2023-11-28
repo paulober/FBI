@@ -12,6 +12,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #pragma once
 
-Result ticket_get_title_id(u64* titleId, u8* ticket, size_t size);
+Result ticket_get_title_id(u64 *titleId, u8 *ticket, size_t size);

@@ -8,7 +8,14 @@
         "${env:DEVKITPRO}/libctru/include/**",
         "${env:DEVKITPRO}/portlibs/3ds/include/**"
       ],
-      "defines": ["3DS", "__3DS__", "DEBUG"],
+      "defines": [
+        "3DS",
+        "__3DS__",
+        "DEBUG",
+        "VERSION_MAJOR",
+        "VERSION_MINOR",
+        "VERSION_MICRO"
+      ],
       "compilerPath": "${env:DEVKITPRO}/devkitARM/bin/arm-none-eabi-g++",
       "cStandard": "c11",
       "cppStandard": "c++17",

@@ -12,15 +12,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #pragma once
 
-typedef struct SMDH_title_s {
+typedef struct SMDH_title_s
+{
     u16 shortDescription[0x40];
     u16 longDescription[0x80];
     u16 publisher[0x40];
 } SMDH_title;
 
-typedef struct SMDH_s {
+typedef struct SMDH_s
+{
     char magic[0x04];
     u16 version;
     u16 reserved1;
@@ -39,5 +42,5 @@ typedef struct SMDH_s {
     u8 largeIcon[0x1200];
 } SMDH;
 
-void smdh_region_to_string(char* out, u32 region, size_t size);
-SMDH_title* smdh_select_title(SMDH* smdh);
+void smdh_region_to_string(char *out, u32 region, size_t size);
+SMDH_title *smdh_select_title(SMDH *smdh);

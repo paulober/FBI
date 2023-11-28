@@ -12,6 +12,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #pragma once
 
 #include "data/data.h"
@@ -19,10 +20,10 @@
 #include "ui/ui.h"
 
 #include "clipboard.h"
-#include "error.h"
-#include "fs.h"
-#include "http.h"
-#include "linkedlist.h"
-#include "screen.h"
-#include "spi.h"
-#include "stringutil.h"
+#include "core_error.h"
+#include "core_fs.h"
+#include "core_http.h"
+#include "core_screen.h"
+#include "core_spi.h"
+#include "linked_list.h"
+#include "string_util.h"

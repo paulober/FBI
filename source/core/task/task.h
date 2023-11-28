@@ -12,13 +12,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #pragma once
+
+#include "capture_cam.h"
+#include "data_op.h"
+#include <3ds.h>
 
 void task_init();
 void task_exit();
 bool task_is_quit_all();
 Handle task_get_pause_event();
 Handle task_get_suspend_event();
-
-#include "capturecam.h"
-#include "dataop.h"

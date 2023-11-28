@@ -1,6 +1,9 @@
-.idea
-cmake-build-debug
-CMakeLists.txt
-
-build
-output
+.DS_Store
+build/
+output/
+*.t3x
+*.3dsx
+*.smdh
+*.exe
+*.elf
+*.cia

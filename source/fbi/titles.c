@@ -12,17 +12,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #include <malloc.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <3ds.h>
 
+#include "../core/core.h"
+#include "action/action.h"
 #include "resources.h"
 #include "section.h"
-#include "action/action.h"
-#include "task/uitask.h"
-#include "../core/core.h"
+#include "task/ui_task.h"
 
 static list_item launch_title = {"Launch Title", COLOR_TEXT, action_launch_title};
 static list_item delete_title = {"Delete Title", COLOR_TEXT, action_delete_title};
@@ -37,7 +38,8 @@ static list_item import_secure_value = {"Import Secure Value", COLOR_TEXT, actio
 static list_item export_secure_value = {"Export Secure Value", COLOR_TEXT, action_export_secure_value};
 static list_item delete_secure_value = {"Delete Secure Value", COLOR_TEXT, action_delete_secure_value};
 
-typedef struct {
+typedef struct
+{
     populate_titles_data populateData;
 
     bool showGameCard;
@@ -50,19 +52,23 @@ typedef struct {
     bool populated;
 } titles_data;
 
-typedef struct {
-    linked_list* items;
-    list_item* selected;
+typedef struct
+{
+    linked_list *items;
+    list_item *selected;
 } titles_action_data;
 
-static void titles_action_draw_top(ui_view* view, void* data, float x1, float y1, float x2, float y2, list_item* selected) {
-    task_draw_title_info(view, ((titles_action_data*) data)->selected->data, x1, y1, x2, y2);
+static void titles_action_draw_top(ui_view *view, void *data, float x1, float y1, float x2, float y2, list_item *selected)
+{
+    task_draw_title_info(view, ((titles_action_data *)data)->selected->data, x1, y1, x2, y2);
 }
 
-static void titles_action_update(ui_view* view, void* data, linked_list* items, list_item* selected, bool selectedTouched) {
-    titles_action_data* actionData = (titles_action_data*) data;
+static void titles_action_update(ui_view *view, void *data, linked_list *items, list_item *selected, bool selectedTouched)
+{
+    titles_action_data *actionData = (titles_action_data *)data;
 
-    if(hidKeysDown() & KEY_B) {
+    if (hidKeysDown() & KEY_B)
+    {
         ui_pop();
         list_destroy(view);
 
@@ -71,8 +77,9 @@ static void titles_action_update(ui_view* view, void* data, linked_list* items, 
         return;
     }
 
-    if(selected != NULL && selected->data != NULL && (selectedTouched || (hidKeysDown() & KEY_A))) {
-        void(*action)(linked_list*, list_item*) = (void(*)(linked_list*, list_item*)) selected->data;
+    if (selected != NULL && selected->data != NULL && (selectedTouched || (hidKeysDown() & KEY_A)))
+    {
+        void (*action)(linked_list *, list_item *) = (void (*)(linked_list *, list_item *))selected->data;
 
         ui_pop();
         list_destroy(view);
@@ -84,31 +91,38 @@ static void titles_action_update(ui_view* view, void* data, linked_list* items, 
         return;
     }
 
-    if(linked_list_size(items) == 0) {
+    if (linked_list_size(items) == 0)
+    {
         linked_list_add(items, &launch_title);
 
-        title_info* info = (title_info*) actionData->selected->data;
+        title_info *info = (title_info *)actionData->selected->data;
 
-        if(info->mediaType != MEDIATYPE_GAME_CARD) {
+        if (info->mediaType != MEDIATYPE_GAME_CARD)
+        {
             linked_list_add(items, &delete_title);
             linked_list_add(items, &delete_title_ticket);
         }
 
-        if(!info->twl) {
+        if (!info->twl)
+        {
             linked_list_add(items, &extract_smdh);
 
-            if(info->mediaType != MEDIATYPE_GAME_CARD) {
+            if (info->mediaType != MEDIATYPE_GAME_CARD)
+            {
                 linked_list_add(items, &import_seed);
             }
 
             linked_list_add(items, &browse_save_data);
 
-            if(info->mediaType != MEDIATYPE_GAME_CARD) {
+            if (info->mediaType != MEDIATYPE_GAME_CARD)
+            {
                 linked_list_add(items, &import_secure_value);
                 linked_list_add(items, &export_secure_value);
                 linked_list_add(items, &delete_secure_value);
             }
-        } else if(info->mediaType == MEDIATYPE_GAME_CARD) {
+        }
+        else if (info->mediaType == MEDIATYPE_GAME_CARD)
+        {
             linked_list_add(items, &import_save_data);
             linked_list_add(items, &export_save_data);
             linked_list_add(items, &erase_save_data);
@@ -116,9 +130,11 @@ static void titles_action_update(ui_view* view, void* data, linked_list* items, 
     }
 }
 
-static void titles_action_open(linked_list* items, list_item* selected) {
-    titles_action_data* data = (titles_action_data*) calloc(1, sizeof(titles_action_data));
-    if(data == NULL) {
+static void titles_action_open(linked_list *items, list_item *selected)
+{
+    titles_action_data *data = (titles_action_data *)calloc(1, sizeof(titles_action_data));
+    if (data == NULL)
+    {
         error_display(NULL, NULL, "Failed to allocate titles action data.");
 
         return;
@@ -130,9 +146,11 @@ static void titles_action_open(linked_list* items, list_item* selected) {
     list_display("Title Action", "A: Select, B: Return", data, titles_action_update, titles_action_draw_top);
 }
 
-static void titles_options_add_entry(linked_list* items, const char* name, bool* val) {
-    list_item* item = (list_item*) calloc(1, sizeof(list_item));
-    if(item != NULL) {
+static void titles_options_add_entry(linked_list *items, const char *name, bool *val)
+{
+    list_item *item = (list_item *)calloc(1, sizeof(list_item));
+    if (item != NULL)
+    {
         snprintf(item->name, LIST_ITEM_NAME_MAX, "%s", name);
         item->color = *val ? COLOR_ENABLED : COLOR_DISABLED;
         item->data = val;
@@ -141,14 +159,17 @@ static void titles_options_add_entry(linked_list* items, const char* name, bool*
     }
 }
 
-static void titles_options_update(ui_view* view, void* data, linked_list* items, list_item* selected, bool selectedTouched) {
-    titles_data* listData = (titles_data*) data;
+static void titles_options_update(ui_view *view, void *data, linked_list *items, list_item *selected, bool selectedTouched)
+{
+    titles_data *listData = (titles_data *)data;
 
-    if(hidKeysDown() & KEY_B) {
+    if (hidKeysDown() & KEY_B)
+    {
         linked_list_iter iter;
         linked_list_iterate(items, &iter);
 
-        while(linked_list_iter_has_next(&iter)) {
+        while (linked_list_iter_has_next(&iter))
+        {
             free(linked_list_iter_next(&iter));
             linked_list_iter_remove(&iter);
         }
@@ -159,37 +180,48 @@ static void titles_options_update(ui_view* view, void* data, linked_list* items,
         return;
     }
 
-    if(selected != NULL && selected->data != NULL && (selectedTouched || (hidKeysDown() & KEY_A))) {
-        bool* val = (bool*) selected->data;
+    if (selected != NULL && selected->data != NULL && (selectedTouched || (hidKeysDown() & KEY_A)))
+    {
+        bool *val = (bool *)selected->data;
         *val = !(*val);
 
-        if(*val && (val == &listData->sortById || val == &listData->sortByName || val == &listData->sortBySize)) {
-            if(val == &listData->sortById) {
+        if (*val && (val == &listData->sortById || val == &listData->sortByName || val == &listData->sortBySize))
+        {
+            if (val == &listData->sortById)
+            {
                 listData->sortByName = false;
                 listData->sortBySize = false;
-            } else if(val == &listData->sortByName) {
+            }
+            else if (val == &listData->sortByName)
+            {
                 listData->sortById = false;
                 listData->sortBySize = false;
-            } else if(val == &listData->sortBySize) {
+            }
+            else if (val == &listData->sortBySize)
+            {
                 listData->sortById = false;
                 listData->sortByName = false;
             }
 
             linked_list_iter iter;
             linked_list_iterate(items, &iter);
-            while(linked_list_iter_has_next(&iter)) {
-                list_item* item = (list_item*) linked_list_iter_next(&iter);
+            while (linked_list_iter_has_next(&iter))
+            {
+                list_item *item = (list_item *)linked_list_iter_next(&iter);
 
-                item->color = *(bool*) item->data ? COLOR_ENABLED : COLOR_DISABLED;
+                item->color = *(bool *)item->data ? COLOR_ENABLED : COLOR_DISABLED;
             }
-        } else {
+        }
+        else
+        {
             selected->color = *val ? COLOR_ENABLED : COLOR_DISABLED;
         }
 
         listData->populated = false;
     }
 
-    if(linked_list_size(items) == 0) {
+    if (linked_list_size(items) == 0)
+    {
         titles_options_add_entry(items, "Show game card", &listData->showGameCard);
         titles_options_add_entry(items, "Show SD", &listData->showSD);
         titles_options_add_entry(items, "Show NAND", &listData->showNAND);
@@ -199,23 +231,30 @@ static void titles_options_update(ui_view* view, void* data, linked_list* items,
     }
 }
 
-static void titles_options_open(titles_data* data) {
+static void titles_options_open(titles_data *data)
+{
     list_display("Options", "A: Toggle, B: Return", data, titles_options_update, NULL);
 }
 
-static void titles_draw_top(ui_view* view, void* data, float x1, float y1, float x2, float y2, list_item* selected) {
-    if(selected != NULL && selected->data != NULL) {
+static void titles_draw_top(ui_view *view, void *data, float x1, float y1, float x2, float y2, list_item *selected)
+{
+    if (selected != NULL && selected->data != NULL)
+    {
         task_draw_title_info(view, selected->data, x1, y1, x2, y2);
     }
 }
 
-static void titles_update(ui_view* view, void* data, linked_list* items, list_item* selected, bool selectedTouched) {
-    titles_data* listData = (titles_data*) data;
+static void titles_update(ui_view *view, void *data, linked_list *items, list_item *selected, bool selectedTouched)
+{
+    titles_data *listData = (titles_data *)data;
 
-    if(hidKeysDown() & KEY_B) {
-        if(!listData->populateData.finished) {
+    if (hidKeysDown() & KEY_B)
+    {
+        if (!listData->populateData.finished)
+        {
             svcSignalEvent(listData->populateData.cancelEvent);
-            while(!listData->populateData.finished) {
+            while (!listData->populateData.finished)
+            {
                 svcSleepThread(1000000);
             }
         }
@@ -229,103 +268,142 @@ static void titles_update(ui_view* view, void* data, linked_list* items, list_it
         return;
     }
 
-    if(hidKeysDown() & KEY_SELECT) {
+    if (hidKeysDown() & KEY_SELECT)
+    {
         titles_options_open(listData);
         return;
     }
 
-    if(!listData->populated || (hidKeysDown() & KEY_X)) {
-        if(!listData->populateData.finished) {
+    if (!listData->populated || (hidKeysDown() & KEY_X))
+    {
+        if (!listData->populateData.finished)
+        {
             svcSignalEvent(listData->populateData.cancelEvent);
-            while(!listData->populateData.finished) {
+            while (!listData->populateData.finished)
+            {
                 svcSleepThread(1000000);
             }
         }
 
         listData->populateData.items = items;
         Result res = task_populate_titles(&listData->populateData);
-        if(R_FAILED(res)) {
+        if (R_FAILED(res))
+        {
             error_display_res(NULL, NULL, res, "Failed to initiate title list population.");
         }
 
         listData->populated = true;
     }
 
-    if(listData->populateData.finished && R_FAILED(listData->populateData.result)) {
+    if (listData->populateData.finished && R_FAILED(listData->populateData.result))
+    {
         error_display_res(NULL, NULL, listData->populateData.result, "Failed to populate title list.");
 
         listData->populateData.result = 0;
     }
 
-    if(selected != NULL && selected->data != NULL && (selectedTouched || (hidKeysDown() & KEY_A))) {
+    if (selected != NULL && selected->data != NULL && (selectedTouched || (hidKeysDown() & KEY_A)))
+    {
         titles_action_open(items, selected);
         return;
     }
 }
 
-static bool titles_filter(void* data, u64 titleId, FS_MediaType mediaType) {
-    titles_data* listData = (titles_data*) data;
+static bool titles_filter(void *data, u64 titleId, FS_MediaType mediaType)
+{
+    titles_data *listData = (titles_data *)data;
 
-    if(mediaType == MEDIATYPE_GAME_CARD) {
+    if (mediaType == MEDIATYPE_GAME_CARD)
+    {
         return listData->showGameCard;
-    } else if(mediaType == MEDIATYPE_SD) {
+    }
+    else if (mediaType == MEDIATYPE_SD)
+    {
         return listData->showSD;
-    } else {
+    }
+    else
+    {
         return listData->showNAND;
     }
 }
 
-static int titles_compare(void* data, const void* p1, const void* p2) {
-    titles_data* listData = (titles_data*) data;
+static int titles_compare(void *data, const void *p1, const void *p2)
+{
+    titles_data *listData = (titles_data *)data;
 
-    list_item* info1 = (list_item*) p1;
-    list_item* info2 = (list_item*) p2;
+    list_item *info1 = (list_item *)p1;
+    list_item *info2 = (list_item *)p2;
 
-    title_info* title1 = (title_info*) info1->data;
-    title_info* title2 = (title_info*) info2->data;
+    title_info *title1 = (title_info *)info1->data;
+    title_info *title2 = (title_info *)info2->data;
 
-
-    if(title1->mediaType > title2->mediaType) {
+    if (title1->mediaType > title2->mediaType)
+    {
         return -1;
-    } else if(title1->mediaType < title2->mediaType) {
+    }
+    else if (title1->mediaType < title2->mediaType)
+    {
         return 1;
-    } else {
-        if(!title1->twl && title2->twl) {
+    }
+    else
+    {
+        if (!title1->twl && title2->twl)
+        {
             return -1;
-        } else if(title1->twl && !title2->twl) {
+        }
+        else if (title1->twl && !title2->twl)
+        {
             return 1;
-        } else {
-            if(listData->sortById) {
+        }
+        else
+        {
+            if (listData->sortById)
+            {
                 u64 id1 = title1->titleId;
                 u64 id2 = title2->titleId;
 
-                return id1 > id2 ? 1 : id1 < id2 ? -1 : 0;
-            } else if(listData->sortByName) {
+                return id1 > id2 ? 1 : id1 < id2 ? -1
+                                                 : 0;
+            }
+            else if (listData->sortByName)
+            {
                 bool title1HasName = title1->hasMeta && !string_is_empty(title1->meta.shortDescription);
                 bool title2HasName = title2->hasMeta && !string_is_empty(title2->meta.shortDescription);
 
-                if(title1HasName && !title2HasName) {
+                if (title1HasName && !title2HasName)
+                {
                     return -1;
-                } else if(!title1HasName && title2HasName) {
+                }
+                else if (!title1HasName && title2HasName)
+                {
                     return 1;
-                } else {
+                }
+                else
+                {
                     return strncasecmp(info1->name, info2->name, sizeof(info1->name));
                 }
-            } else if(listData->sortBySize) {
+            }
+            else if (listData->sortBySize)
+            {
                 u64 size1 = title1->installedSize;
                 u64 size2 = title2->installedSize;
 
-                return size1 > size2 ? -1 : size1 < size2 ? 1 : 0;
-            } else {
+                return size1 > size2 ? -1 : size1 < size2 ? 1
+                                                          : 0;
+            }
+            else
+            {
                 return 0;
             }
         }
     }
 }
 
-void titles_open() {
-    titles_data* data = (titles_data*) calloc(1, sizeof(titles_data));
-    if(data == NULL) {
+void titles_open()
+{
+    titles_data *data = (titles_data *)calloc(1, sizeof(titles_data));
+    if (data == NULL)
+    {
         error_display(NULL, NULL, "Failed to allocate titles data.");
 
         return;

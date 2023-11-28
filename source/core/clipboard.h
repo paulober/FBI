@@ -12,11 +12,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #pragma once
 
 bool clipboard_has_contents();
 FS_Archive clipboard_get_archive();
-char* clipboard_get_path();
+char *clipboard_get_path();
 bool clipboard_is_contents_only();
-Result clipboard_set_contents(FS_Archive archive, const char* path, bool contentsOnly);
+Result clipboard_set_contents(FS_Archive archive, const char *path, bool contentsOnly);
 void clipboard_clear();

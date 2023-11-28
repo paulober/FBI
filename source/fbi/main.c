@@ -13,19 +13,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include <sys/iosupport.h>
 #include <malloc.h>
+#include <sys/iosupport.h>
 
 #include <3ds.h>
 
 #include "../core/clipboard.h"
-#include "../core/error.h"
-#include "../core/fs.h"
-#include "../core/screen.h"
+#include "../core/core_error.h"
+#include "../core/core_fs.h"
+#include "../core/core_screen.h"
 #include "../core/task/task.h"
 #include "../core/ui/ui.h"
 #include "section.h"
-#include "task/uitask.h"
+#include "task/ui_task.h"
 
 #define CURRENT_KPROCESS (*(void **)0xFFFF9004)
 

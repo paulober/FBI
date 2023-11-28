@@ -12,33 +12,40 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <3ds.h>
 
-#include "resources.h"
 #include "../core/core.h"
+#include "resources.h"
 
-static FILE* resources_open_file(const char* path) {
+static FILE *resources_open_file(const char *path)
+{
     char realPath[FILE_PATH_MAX];
     snprintf(realPath, sizeof(realPath), "sdmc:/fbi/theme/%s", path);
 
-    FILE* fd = fopen(realPath, "rb");
+    FILE *fd = fopen(realPath, "rb");
 
-    if(fd != NULL) {
+    if (fd != NULL)
+    {
         return fd;
-    } else {
+    }
+    else
+    {
         snprintf(realPath, sizeof(realPath), "romfs:/%s", path);
 
         return fopen(realPath, "rb");
     }
 }
 
-static void resources_load_texture(u32 id, const char* name) {
-    FILE* fd = resources_open_file(name);
-    if(fd == NULL) {
+static void resources_load_texture(u32 id, const char *name)
+{
+    FILE *fd = resources_open_file(name);
+    if (fd == NULL)
+    {
         error_panic("Failed to open texture \"%s\": %s\n", name, strerror(errno));
         return;
     }
@@ -48,41 +55,65 @@ static void resources_load_texture(u32 id, const char* name) {
     fclose(fd);
 }
 
-void resources_load() {
-    FILE* fd = resources_open_file("textcolor.cfg");
-    if(fd == NULL) {
+void resources_load()
+{
+    FILE *fd = resources_open_file("textcolor.cfg");
+    if (fd == NULL)
+    {
         error_panic("Failed to open text color config: %s\n", strerror(errno));
         return;
     }
 
     char line[128];
-    while(fgets(line, sizeof(line), fd) != NULL) {
+    while (fgets(line, sizeof(line), fd) != NULL)
+    {
         char key[64];
         u32 color = 0;
 
         sscanf(line, "%63[^=]=%lx", key, &color);
 
-        if(strcasecmp(key, "text") == 0) {
+        if (strcasecmp(key, "text") == 0)
+        {
             screen_set_color(COLOR_TEXT, color);
-        } else if(strcasecmp(key, "nand") == 0) {
+        }
+        else if (strcasecmp(key, "nand") == 0)
+        {
             screen_set_color(COLOR_NAND, color);
-        } else if(strcasecmp(key, "sd") == 0) {
+        }
+        else if (strcasecmp(key, "sd") == 0)
+        {
             screen_set_color(COLOR_SD, color);
-        } else if(strcasecmp(key, "gamecard") == 0) {
+        }
+        else if (strcasecmp(key, "gamecard") == 0)
+        {
             screen_set_color(COLOR_GAME_CARD, color);
-        } else if(strcasecmp(key, "dstitle") == 0) {
+        }
+        else if (strcasecmp(key, "dstitle") == 0)
+        {
             screen_set_color(COLOR_DS_TITLE, color);
-        } else if(strcasecmp(key, "file") == 0) {
+        }
+        else if (strcasecmp(key, "file") == 0)
+        {
             screen_set_color(COLOR_FILE, color);
-        } else if(strcasecmp(key, "directory") == 0) {
+        }
+        else if (strcasecmp(key, "directory") == 0)
+        {
             screen_set_color(COLOR_DIRECTORY, color);
-        } else if(strcasecmp(key, "enabled") == 0) {
+        }
+        else if (strcasecmp(key, "enabled") == 0)
+        {
             screen_set_color(COLOR_ENABLED, color);
-        } else if(strcasecmp(key, "disabled") == 0) {
+        }
+        else if (strcasecmp(key, "disabled") == 0)
+        {
             screen_set_color(COLOR_DISABLED, color);
-        } else if(strcasecmp(key, "ticketinuse") == 0) {
+        }
+        else if (strcasecmp(key, "ticketinuse") == 0)
+        {
             screen_set_color(COLOR_TICKET_IN_USE, color);
-        } else if(strcasecmp(key, "ticketnotinuse") == 0) {
+        }
+        else if (strcasecmp(key, "ticketnotinuse") == 0)
+        {
             screen_set_color(COLOR_TICKET_NOT_IN_USE, color);
         }
     }

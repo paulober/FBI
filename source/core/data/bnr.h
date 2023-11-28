@@ -12,9 +12,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #pragma once
 
-typedef struct BNR_s {
+typedef struct BNR_s
+{
     u8 version;
     bool animated;
     u16 crc16[4];
@@ -27,4 +29,4 @@ typedef struct BNR_s {
     u16 animationSequence[0x40];
 } BNR;
 
-u16* bnr_select_title(BNR* bnr);
+u16 *bnr_select_title(BNR *bnr);
