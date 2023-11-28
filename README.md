@@ -31,7 +31,10 @@ Libraries:
 
 # Credit
 
+`Original Copyright (C) 2015-2019 Steveice10`
+
 Project initially forked from [Steveice10's](https://github.com/Steveice10/FBI).
+with [LICENSE-MIT](https://github.com/paulober/FBI/tree/main/LICENSE-MIT)
 
 Banner: Originally created by [OctopusRift](http://gbatemp.net/members/octopusrift.356526/), touched up by [Apache Thunder](https://gbatemp.net/members/apache-thunder.105648/), updated for new logo by [PabloMK7](http://gbatemp.net/members/pablomk7.345712/).
 
