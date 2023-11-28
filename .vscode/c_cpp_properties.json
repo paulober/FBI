@@ -1,0 +1,19 @@
+{
+  "configurations": [
+    {
+      "name": "DKP ARM",
+      "includePath": [
+        "${env:DEVKITPRO}/devkitARM/arm-none-eabi/include/**",
+        "${env:DEVKITPRO}/devkitARM/lib/gcc/arm-none-eabi/13.2.0/include/**",
+        "${env:DEVKITPRO}/libctru/include/**",
+        "${env:DEVKITPRO}/portlibs/3ds/include/**"
+      ],
+      "defines": ["3DS", "__3DS__", "DEBUG"],
+      "compilerPath": "${env:DEVKITPRO}/devkitARM/bin/arm-none-eabi-g++",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "linux-gcc-arm"
+    }
+  ],
+  "version": 4
+}

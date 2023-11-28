@@ -1,0 +1,5 @@
+{
+  "editor.formatOnSave": true,
+  "editor.tabSize": 4,
+  "C_Cpp.default.compilerPath": "/opt/devkitpro/devkitARM/bin/arm-none-eabi-g++"
+}
