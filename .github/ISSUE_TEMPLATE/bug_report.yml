@@ -43,7 +43,7 @@ body:
       description: The 3DS firmware version you experienced this bug on.
       placeholder: ex. 11.17.0-50E
     validations:
-      required: false
+      required: true
   - type: input
     id: 3ds-model
     attributes:
