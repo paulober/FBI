@@ -1,0 +1,54 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+        Before creating an issue, remember that FBI does not work on systems without custom firmware.
+        
+        If you are experiencing issues installing a CIA file, please make sure that:
+
+        - Your CIA file is valid.
+        - Your SD card is good.
+          - Make sure you don't have a counterfeit SD card.
+          - Check the SD card for filesystem errors.
+          - Try a different SD card, if possible.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+      value: "A bug happened!"
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of our software are you running?
+      options:
+        - 2.6.2 (Current)
+        - 2.6.1 (Legacy)
+      multiple: false
+    validations:
+      required: true
+  - type: input
+    id: 3ds-firmware
+    attributes:
+      label: 3DS Firmware version
+      description: The 3DS firmware version you experienced this bug on.
+      placeholder: ex. 11.17.0-50E
+    validations:
+      required: false
+  - type: input
+    id: 3ds-model
+    attributes:
+      label: 3DS/2DS Model
+      description: The 3DS/2DS model you experienced this bug on.
+      placeholder: ex. New 3DS XL
+    validations:
+      required: false
