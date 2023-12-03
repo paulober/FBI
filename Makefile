@@ -29,9 +29,8 @@ ROMFS		:=	romfs
 GFXBUILD	:=	$(ROMFS)/gfx
 
 APP_TITLE		:= FBI
-APP_DESCRIPTION := Open source title manager.
-APP_AUTHOR		:= 2023 paulober
-APP_AUTHOR		+=  2015-2019 Steveice10
+APP_DESCRIPTION := Open source title manager. (maintained by paulober)
+APP_AUTHOR		:= paulober
 ICON 			:= meta/icon_3ds.png
 
 VERSION_PARTS := $(subst ., ,$(shell git describe --tags --abbrev=0))
